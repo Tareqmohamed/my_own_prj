@@ -1,0 +1,117 @@
+
+/* author: Yudiz Solutions Limited
+https://codepen.io/yudizsolutions/pen/eYbevjq */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --x: 0px;
+  --y: 0px;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #000;
+}
+
+section {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cards-container {
+  position: relative;
+  width: 100%;
+}
+
+.single-card-wrapper > a {
+  display: block;
+  height: 100%;
+  width: 100%;
+  color: #fff;
+  font-weight: 500;
+  -webkit-text-decoration: underline solid #5e6077 1px;
+  text-decoration: underline solid #5e6077 1px;
+  transition: color 0.2s cubic-bezier(0.45, 0, 0.55, 1);
+  text-underline-offset: 3px;
+}
+.single-card-wrapper > a:hover {
+  color: #ececfb;
+}
+.card-hover-container {
+  border: 0.5px solid #ffffff1e;
+  width: 100%;
+  border-radius: 26px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  min-height: 399px;
+  aspect-ratio: 1;
+}
+/* .card-hover-container::after{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(#171825 40%,#63e 50%,#8e64ff,#f92672);
+  mix-blend-mode: darken;
+} */
+.card-gradient {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background: radial-gradient(#171825 40%, #63e 50%, #8e64ff, #f92672);
+  mix-blend-mode: darken;
+  pointer-events: none;
+  z-index: 3;
+}
+.card-hover-container > img , svg {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 4;
+}
+.card-bg-characters {
+  --x: 0px;
+  --y: 0px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  word-wrap: break-word;
+  font-size: 14px;
+  overflow: hidden;
+  font-family: monospace;
+  line-height: 1.15;
+  color: #fff;
+  opacity: 0;
+  transition: 0.5s;
+  -webkit-mask-image: radial-gradient(
+    300px circle at var(--x) var(--y),
+    #000 20%,
+    rgba(0, 0, 0, 0.25),
+    transparent
+  );
+  mask-image: radial-gradient(
+    300px circle at var(--x) var(--y),
+    #000 20%,
+    rgba(0, 0, 0, 0.25),
+    transparent
+  );
+  transform: scale(1.025);
+}
+.card-hover-container:hover .card-bg-characters {
+  opacity: 1;
+}
