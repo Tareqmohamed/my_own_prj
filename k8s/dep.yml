@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: self-app-dep
+  namespace: self-app-ns
+  labels:
+    app: self-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: self-app
+  template:
+    metadata:
+      labels:
+        app: self-app
+    spec:
+      containers:
+      - name: self-app-cont
+        image: tareqmohamed/my_app_node:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 3000
