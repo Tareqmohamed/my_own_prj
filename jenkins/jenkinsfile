@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials("2") 
+        IMAGE_NAME = 'tareqmohamed/my_app_node' 
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Tareqmohamed/my_own_prj' 
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("${IMAGE_NAME}:v${BUILD_NUMBER}")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com','2') {
+                        docker.image("${IMAGE_NAME}:v${BUILD_NUMBER}").push()
+                }
+            }
+        }
+    }
+}
+
+    post {
+        always {
+            echo 'Cleaning up Docker resources...'
+            sh "docker rmi ${IMAGE_NAME}:v${BUILD_NUMBER}"
+        }
+    }
+}
