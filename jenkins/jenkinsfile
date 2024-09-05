@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     environment {
-        DOCKERHUB_CREDENTIALS = credentials("2") 
         IMAGE_NAME = 'tareqmohamed/my_app_node' 
     }
 
