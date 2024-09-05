@@ -10,6 +10,9 @@
     state: present
     src: /mnt/Cracows/depi/projects/my_own_prj/k8s/cf.yml
     kubeconfig: /home/tarek/.kube/config
+  notify:
+    - Restart self-app-dep
+
 
 - name: Apply Kubernetes deployment
   kubernetes.core.k8s:
@@ -31,22 +34,6 @@
 - name: Show all resources output
   debug:
     var: kubectl_output.stdout
-
-# - name: Ensure Minikube is started
-#   command: minikube start
-#   register: minikube_start
-#   changed_when: "'* Profile \"minikube\" not found' in minikube_start.stdout or minikube_start.rc == 0"
-
-# - name: Get Minikube IP
-#   command: minikube ip
-#   register: minikube_ip
-#   failed_when: minikube_ip.rc != 0
-#   changed_when: minikube_ip.rc == 0
-
-
-# - name: Display Minikube IP
-#   debug:
-#     var: minikube_ip.stdout
 
 - name: Get Service NodePort
   command: kubectl get svc {{ service_name }} -n {{ namespace }} -o=jsonpath='{.spec.ports[0].nodePort}' --kubeconfig=/home/tarek/.kube/config

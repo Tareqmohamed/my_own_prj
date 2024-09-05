@@ -1,2 +1,17 @@
 ---
 # handlers file for setup-k8s-service
+  - name: Restart self-app-dep
+    kubernetes.core.k8s:
+      kubeconfig: /home/tarek/.kube/config
+      state: present
+      namespace: self-app-ns
+      definition:
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: self-app-dep
+        spec:
+          template:
+            metadata:
+              annotations:
+                kubernetes.io/change-cause: "Rolling restart triggered by ConfigMap change {{ ansible_date_time.iso8601 }}"

@@ -18,6 +18,9 @@ spec:
       containers:
       - name: self-app-cont
         image: tareqmohamed/my_app_node:latest
+        envFrom:
+        - configMapRef:
+            name: self-app-cf
         resources:
           limits:
             memory: "128Mi"
