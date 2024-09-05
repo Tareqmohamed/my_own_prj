@@ -1,0 +1,124 @@
+- name: "Check if Python 3 is installed"
+  command: python3 --version
+  register: python_installed
+  ignore_errors: yes
+
+- name: "Install Python 3 if not installed"
+  apt:
+    name: "{{ python_version }}"
+    state: present
+  when: python_installed.rc != 0
+  tags: python
+
+# Check if Pip is installed and install if missing
+- name: "Check if pip is installed"
+  command: pip3 --version
+  register: pip_installed
+  ignore_errors: yes
+
+- name: "Install Pip if not installed"
+  apt:
+    name: "{{ pip_package }}"
+    state: present
+  when: pip_installed.rc != 0
+  tags: python
+
+- name: Install kubernetes Python module
+  ansible.builtin.pip:
+    name: kubernetes
+    state: present
+  become: yes
+  
+# Check if Docker is installed and install if missing
+- name: "Check if Docker is installed"
+  command: docker --version
+  register: docker_installed
+  ignore_errors: yes
+
+- name: "Install Docker if not installed"
+  apt:
+    name: "{{ docker_version }}"
+    state: present
+  when: docker_installed.rc != 0
+  tags: docker
+
+# Check if Docker Compose is installed and install if missing
+- name: "Check if Docker Compose is installed"
+  command: docker-compose --version
+  register: docker_compose_installed
+  ignore_errors: yes
+
+- name: "Install Docker Compose if not installed"
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+    dest: /usr/local/bin/docker-compose
+  when: docker_compose_installed.rc != 0
+  tags: docker
+
+- name: "Make Docker Compose executable"
+  file:
+    path: /usr/local/bin/docker-compose
+    mode: '0755'
+  when: docker_compose_installed.rc != 0
+  tags: docker
+
+# Check if Minikube is installed and install if missing
+- name: "Check if Minikube is installed"
+  command: minikube version
+  register: minikube_installed
+  ignore_errors: yes
+
+- name: "Install Minikube if not installed"
+  get_url:
+    url: "{{ minikube_url }}"
+    dest: /usr/local/bin/minikube
+  when: minikube_installed.rc != 0
+  tags: minikube
+
+- name: "Make Minikube executable"
+  file:
+    path: /usr/local/bin/minikube
+    mode: '0755'
+  when: minikube_installed.rc != 0
+  tags: minikube
+
+# Check if Kubectl is installed and install if missing
+- name: "Check if Kubectl is installed"
+  command: kubectl version --client
+  register: kubectl_installed
+  ignore_errors: yes
+
+- name: "Install Kubectl if not installed"
+  get_url:
+    url: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl"
+    dest: /usr/local/bin/kubectl
+  when: kubectl_installed.rc != 0
+  tags: kubectl
+
+- name: "Make Kubectl executable"
+  file:
+    path: /usr/local/bin/kubectl
+    mode: '0755'
+  when: kubectl_installed.rc != 0
+  tags: kubectl
+
+# Check if K9s is installed and install if missing
+- name: "Check if K9s is installed"
+  command: k9s version
+  register: k9s_installed
+  ignore_errors: yes
+
+- name: "Install K9s if not installed"
+  get_url:
+    url: "https://github.com/derailed/k9s/releases/download/{{ k9s_version }}/k9s_Linux_x86_64.tar.gz"
+    dest: /tmp/k9s.tar.gz
+  when: k9s_installed.rc != 0
+  tags: k9s
+
+- name: "Unpack K9s"
+  unarchive:
+    src: /tmp/k9s.tar.gz
+    dest: /usr/local/bin/
+    remote_src: yes
+  when: k9s_installed.rc != 0
+  tags: k9s

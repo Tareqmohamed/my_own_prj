@@ -1,0 +1,7 @@
+---
+- name: Setup DevOps tools on server
+  hosts: all
+  become: yes   
+  roles:
+    - setup-enviroment   
+    - setup-k8s-service

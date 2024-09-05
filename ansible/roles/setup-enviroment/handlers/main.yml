@@ -1,0 +1,7 @@
+---
+# Handlers to restart Docker and other services if needed
+- name: Restart Docker
+  become: true
+  service:
+    name: docker
+    state: restarted

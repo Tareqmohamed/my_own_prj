@@ -1,0 +1,4 @@
+---
+# defaults file for setup-k8s-service
+namespace: "self-app-ns"
+service_name: "self-app-svc"

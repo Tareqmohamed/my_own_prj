@@ -1,0 +1,10 @@
+---
+# defaults file for setup-enviroment
+java_version: openjdk-8-jdk
+python_version: python3
+pip_package: python3-pip
+docker_version: docker-ce
+docker_compose_version: "1.29.2"
+minikube_url: "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
+kubectl_version: "v1.21.0"
+k9s_version: v0.25.18
