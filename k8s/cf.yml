@@ -4,7 +4,7 @@ metadata:
   name: self-app-cf
   namespace: self-app-ns
 data:
-  NAME: "TAREK"
+  NAME: "ahmed"
   CV_URL: "https://drive.google.com/file/d/1uPYk4_0FhQoKk-Tpcw6z0jW0sfAgY3Wy/view"
   GITHUB_URL: "https://github.com/Tareqmohamed"
   LINKEDIN_URL: "https://www.linkedin.com/in/tareqmohamad/"
