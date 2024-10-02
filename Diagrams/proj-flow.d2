@@ -1,0 +1,88 @@
+#!/usr/bin/env d2 --theme 200
+#
+#  Author: Tarek Mohamed
+#  Date: 2024-10-02
+#  vim:ts=2:sts=2:sw=2:et:filetype=d2
+#
+#  ArgoCD - GitOps Workflow for Jenkins, Docker Hub, Ansible, and Kubernetes
+#
+
+# ============================================================================ #
+#      C I / C D   P i p e l i n e   w i t h   A r g o C D   a n d   K 8 s
+# ============================================================================ #
+
+direction: right
+
+title: {
+  label: CI/CD Pipeline with ArgoCD and Kubernetes
+  near: top-center
+  shape: text
+  style.font-size: 40
+  style.underline: true
+}
+
+classes: {
+  argocd: {
+    label: ArgoCD
+    icon: https://diagrams.mingrammer.com/img/resources/onprem/gitops/argocd.png
+    shape: image
+  }
+  cicd: {
+    label: CI/CD (Jenkins)
+    icon: https://diagrams.mingrammer.com/img/resources/onprem/ci/jenkins.png
+    shape: image
+  }
+  devops: {
+    label: DevOps
+    icon: https://cdn-icons-png.flaticon.com/512/6463/6463383.png
+    shape: image
+  }
+  github: {
+    label: GitHub\nRepository
+    icon: https://diagrams.mingrammer.com/img/resources/onprem/vcs/github.png
+    shape: image
+  }
+  dockerhub: {
+    label: Docker Hub
+    icon: https://icons.terrastruct.com/dev%2Fdocker.svg
+    shape: image
+  }
+  k8s: {
+    label: Kubernetes
+    icon: https://icons.terrastruct.com/azure%2F_Companies%2FKubernetes.svg
+    shape: image
+  }
+  ansible: {
+    label: Ansible
+    icon: https://diagrams.mingrammer.com/img/resources/onprem/iac/ansible.png
+    shape: image
+  }
+    dash: {
+    style.stroke-dash: 5
+    style.animated: true
+  }
+}
+
+devops.class: devops
+github.class: github
+cicd.class: cicd
+dockerhub.class: dockerhub
+ansible.class: ansible
+argocd.class: argocd
+k8s.class: k8s
+
+devops -> github: push code {class: dash}
+
+github -> cicd: webhook triggers build {class: dash}
+
+cicd -> dockerhub: build and push Docker image {class: dash}
+
+dockerhub -> ansible: Docker image available {class: dash}
+
+ansible -> k8s: automates deployment {class: dash}
+
+argocd -> github: poll for changes {class: dash}
+
+github -> argocd: pull updates {class: dash}
+
+argocd -> k8s: sync changes in Kubernetes {class: dash}

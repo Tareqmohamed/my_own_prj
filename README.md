@@ -1,11 +1,12 @@
-# CI/CD Pipeline with Jenkins, GitHub, Docker Hub, Ansible, and Kubernetes
+# CI/CD Pipeline with Jenkins, GitHub, Docker Hub, Ansible, Argo CD, and Kubernetes
 
-This project demonstrates a fully automated CI/CD pipeline that integrates Jenkins, GitHub webhooks, Docker Hub, and Kubernetes. It automates the containerization of an application, pushes updates to Docker Hub, and deploys it seamlessly to a Kubernetes cluster using Ansible.
+This project demonstrates a fully automated CI/CD pipeline that integrates Jenkins, GitHub webhooks, Docker Hub, and Kubernetes. It automates the containerization of an application, pushes updates to Docker Hub, and deploys it seamlessly to a Kubernetes cluster using Ansible. Additionally, GitOps principles are applied through Argo CD for continuous delivery.
 
 ## Features
-- **CI/CD Automation**: A streamlined CI/CD pipeline implemented using Jenkins and GitHub webhooks.
+- **GitOps Automation**: Continuous deployment is handled by Argo CD, ensuring the Kubernetes cluster state matches the desired state stored in a Git repository.
+- **CI/CD Pipeline**: A streamlined CI/CD pipeline implemented using Jenkins and GitHub webhooks.
 - **Containerization**: Automatic build and push of Docker images to Docker Hub.
-- **Kubernetes Deployment**: Deployment to Kubernetes cluster using Ansible.
+- **Kubernetes Deployment**: Deployment to a Kubernetes cluster using Ansible and Argo CD.
 - **Service Exposure**: New services are automatically exposed with health checks.
 - **Quick Access**: Service URLs are printed for immediate access to the deployed application.
 
@@ -43,6 +44,7 @@ This project demonstrates a fully automated CI/CD pipeline that integrates Jenki
 - Jenkins installed and configured with necessary plugins (e.g., GitHub, Docker)
 - Docker installed on the build machine
 - Kubernetes cluster set up and configured
+- Argo CD installed and configured in the Kubernetes cluster
 - Ansible installed on the deployment machine
 - GitHub repository for triggering webhooks
 
@@ -55,13 +57,17 @@ This project demonstrates a fully automated CI/CD pipeline that integrates Jenki
    - The application is automatically built into a Docker image using the `Dockerfile`.
    - The built image is pushed to Docker Hub.
 
-3. **Kubernetes Deployment**:
-   - Ansible is used to deploy the application to a Kubernetes cluster.
-   - The service is exposed, and health checks are performed to ensure the application is running correctly.
+3. **Kubernetes Deployment with GitOps**:
+   - Argo CD monitors the Git repository for changes in the Kubernetes manifests or Docker image version.
+   - Upon detecting a change, Argo CD automatically syncs the Kubernetes cluster with the desired state.
+   - Ansible can be used for additional tasks like environment setup.
 
 4. **Quick Access**:
    - Once deployed, the service URL is printed to the console for immediate access to the application.
 
+## GitOps Workflow Diagram
+
+![](Diagrams/out.svg)
 ## How to Run
 
 ### Step 1: Set Up Jenkins Pipeline
@@ -78,8 +84,8 @@ This project demonstrates a fully automated CI/CD pipeline that integrates Jenki
    ansible-playbook -i ansible/inventory.ini ansible/playbook.yml
    ```
 
-### Step 3: Deploy to Kubernetes(Optinal)
-   - Run the following command to deploy the application to Kubernetes in case you don't want to use ansible:
+### Step 3: Deploy to Kubernetes (Optional)
+   - Run the following command to deploy the application to Kubernetes in case you don't want to use Ansible:
 1. The Kubernetes YAML files (`dep.yml`, `serv.yml`, etc.) define the deployment.
 2. Run the `runk8s.sh` script to apply the Kubernetes manifests:
    ```bash
@@ -96,9 +102,5 @@ Once deployed, the application’s service URL will be printed to the console. U
 - **Docker**: To containerize the application.
 - **Docker Hub**: For storing and distributing Docker images.
 - **Ansible**: To automate Kubernetes deployment.
+- **Argo CD**: For GitOps-based continuous deployment.
 - **Kubernetes**: For orchestrating the containerized application.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
